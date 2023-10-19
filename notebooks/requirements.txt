@@ -1,0 +1,9 @@
+torch
+datasets[audio]
+torchaudio
+librosa
+transformers
+evaluate
+jiwer
+wordcloud
+matplotlib
