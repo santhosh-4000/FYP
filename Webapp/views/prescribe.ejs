@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-prescription</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+	</script>
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf-autotable"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel='stylesheet' href='css/style.css'>
+</head>
+<body>
+    <div class="testbox">
+        <form id="form" method="post">
+            <div>
+                <p>date: <span id="current_date"></span></p>
+                <p>time: <span id="current_time"></span></p>
+            </div>
+            <br>
+            <fieldset>
+                <legend>Doctor Information</legend>
+                <div>
+                    <p> Doctor Name: <span id="doctor_name"><%= doctor_name  %></span> </p>
+                    <p> Doctor email: <span id="doctor_email"><%= doctor_email  %></span> </p>
+                </div>
+            </fieldset>
+            <br>
+            <fieldset>
+                <legend>Patient Information</legend>
+                <div>
+                    <div class="item">
+                        <label for="patient_phone">Patient phone</label>
+                        <input type="number" name="patient_phone" id="patient_phone">
+                    </div>
+
+                    <div class="item bg-danger">
+                        <span id="check"></span>
+                    </div>
+
+                    <div class="item">
+                        <button type="button" id="get_patient">get details</button>
+                        <button type="button" id="get_patient_history">get history</button>
+                    </div>
+                    
+                    <div class="item">
+                        <label for="patient_name">Patient name</label>
+                        <input type="text" name="patient_name" id="patient_name">
+                    </div>
+    
+                    <div class="item">
+                        <label for="patient_dob">Date of birth:</label>
+                        <input type="date" name="patient_dob" id="patient_dob">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+
+                    <div class="item">
+                        <label for="health_issue">Health issue</label>
+                        <input type="text" name="health_issue" id="health_issue">
+                    </div> 
+    
+                    <div class="item">
+                        <label for="patient_symptoms">symptoms</label>
+                        <textarea name="patient_symptoms" id="patient_symptoms" cols="30" rows="10"></textarea>
+                        <i class="fas fa-microphone" id="mic_patient_symptoms" onclick="startButton(event)"></i>
+                    </div>
+                    
+                    <div class="item">
+                        <label for="patient_diagnosis">diagnosis</label>
+                        <input type="text" name="patient_diagnosis" id="patient_diagnosis">
+                        <i class="fas fa-microphone" id="mic_patient_diagnosis" onclick="startButton(event)"></i>
+                    </div> 
+                </div>
+            </fieldset>
+            
+            <br>
+            <fieldset>
+                <legend>Enter medicine</legend>
+                <div>
+                    <div class="item">
+                        <label for="medicine_name">medicine name</label>
+                        <input type="text" name="medicine_name" id="medicine_name">
+                        <i class="fas fa-microphone" id="mic_medicine_name"></i>
+                    </div>
+                    <div class="item">
+                        <label for="medicine_conc">concentration</label>
+                        <input type="text" name="medicine_conc" id="medicine_conc">
+                        <i class="fas fa-microphone" id="mic_medicine_conc" onclick="startButton(event)"></i>
+                    </div>
+                    <div class="item">
+                        <label for="medicine_dosg">dosage</label>
+                        <input type="text" name="medicine_dosg" id="medicine_dosg">
+                        <i class="fas fa-microphone" id="mic_medicine_dosg" onclick="startButton(event)"></i>
+                    </div>
+                    <div class="item">
+                        <label for="medicine_quantity">quantity</label>
+                        <input type="text" name="medicine_quantity" id="medicine_quantity">
+                        <i class="fas fa-microphone" id="mic_medicine_quantity" onclick="startButton(event)"></i>
+                    </div>
+                    <div class="content" id="allergic_med_popup">
+                        <div onclick="hideAlertPopup()" class="close-btn">
+                            ×
+                        </div>
+                        <h3>Alert</h3>
+                        <p><span id="allergic_medname"></span> is allergic</p>
+                        <p>please confirm to add medicine</p>
+                        <button type="button" id="allergic_med_add">add</button>
+                        <button type="button" id="allergic_med_cancel">cancel</button>
+                    </div>
+                    <div class="item">
+                        <button type="button" id="add_medicine">Add</button>
+                    </div>
+                </div>
+
+                <h3>Prescription: </h3>
+                <div class="prescription-list">
+                    <table id="table">
+                        <thead>
+                            <tr>
+                                <th>medicine name</th>
+                                <th>concentration</th>
+                                <th>dosage</th>
+                                <th>quantity</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </fieldset>
+            
+            <br>
+            <div class="item">
+                <label for="prescription_notes">Notes</label>
+                <textarea name="prescription_notes" id="prescription_notes" cols="30" rows="10"></textarea>
+                <i class="fas fa-microphone" id="mic_prescription_notes" onclick="startButton(event)"></i>
+            </div>
+            <div class="btn-block">
+                <button type="submit">Confirm</button>
+            </div>
+            <div class="content" id="confirm_prescription">
+                <div onclick="toggleSubmitPopup()" class="close-btn">
+                    ×
+                </div>
+                <h3>Popup</h3>
+                <p>Prescription saved successfully!</p>
+                <button type="button" id="topdf_btn">convert to pdf</button>
+            </div>
+        </form>
+    </div>
+</body>
+    <script src="js/datetime.js" charset="utf-8"></script>
+    <script src="js/medicine_list.js" charset="utf-8"></script>
+    <script src="js/voice_recognition.js" charset="utf-8"></script>
+    <script src="js/medname_api_request.js" charset="utf-8"></script>
+    <script src="js/patient_details.js" charset="utf-8"></script>
+    <script src="js/medicine_prescribe.js" charset="utf-8"></script>
+</html>

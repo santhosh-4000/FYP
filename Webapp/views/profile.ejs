@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Login Register App</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+	</script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="./css/main.css">
+
+
+	<script type="text/javascript">
+		$(document).ready(() => {
+
+			$("#form1").submit((event) => {
+				event.preventDefault();
+                console.log(`fhjejherjh`);
+				$.ajax({
+					type: 'POST',
+					url: '/patient',
+					data: $('#form1').serialize(),
+					dataType: "json",
+					success: (response) => {
+						$('#form1')[0].reset();
+
+						document.getElementById("check").innerHTML = response.Success;
+						//ADD THIS CODE
+						setTimeout(() => {
+							document.getElementById("check").innerHTML = "";
+						}, 3000);
+						if (response.Success == "You are regestered,You can login now.") {
+							document.getElementById("aa").click();
+						};
+					},
+					error: () => {
+					}
+				})
+			});
+		});
+	</script>
+</head>
+
+<body>
+
+	<div class="col-md-4 col-md-offset-4 form-card">
+		<div>
+			<p> Patient Details
+			</p>
+		</div>
+		<div class="form-group">
+			<form id="form1" method="post">
+				
+				<input type="text" name="patient_name" placeholder="ENTER PATIENT NAME" required="" class="form-control"><br />
+				<input type="text" name="phonenumber" placeholder="ENTER PATIENT CONTACT DETAILS" required="" class="form-control"><br />
+				<input type="number" name="age" placeholder="Age" required="" class="form-control"><br />
+				<input type="radio" id="gender1"  name="gender" value="male" required="" >
+				<label for="gender1">Male</label><br>
+				<input type="radio" id="gender"  name="gender" value="female" required="" >
+				<label for="gender">Female</label><br>
+				<input type="date" name="dateofbirth" placeholder="DOB" required="" class="form-control"><br />
+				<input type="text" name="healthissue" placeholder="ENTER PATIENT HEALTH ISSUE" required="" class="form-control"><br />
+				
+				<input type="submit" value="Register" class="btn btn-success">
+			</form>
+		</div>
+
+	</div>
+	<script>
+
+	</script>
+</body>
+
+</html>

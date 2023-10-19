@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>E-Prescripion</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+	</script>
+	<link rel='stylesheet' href='css/style.css'>
+</head>
+<body>
+	<h2>Patient history</h2>
+	<% for(var i=0; i < patientHistory.length; i++) { %>
+		<br>
+		<p>Created at: <%= patientHistory[i].createdAt %></p>
+		<p>Patient symptoms: <%= patientHistory[i].patient_symptoms %></p>
+		<p>Patient diagnosis: <%= patientHistory[i].patient_diagnosis %></p>
+		<table id="table">
+			<thead>
+				<tr>
+					<th>medicine name</th>
+					<th>concentration</th>
+					<th>dosage</th>
+					<th>quantity</th>
+				</tr>
+			</thead>
+			<tbody>
+		<% for(var j=0; j < patientHistory[i].medicine_list.length; j++) { %>
+			<tr>
+				<td><%= patientHistory[i].medicine_list[j].medicine_name %></td>
+				<td><%= patientHistory[i].medicine_list[j].medicine_conc %></td>
+				<td><%= patientHistory[i].medicine_list[j].medicine_dosg %></td>
+				<td><%= patientHistory[i].medicine_list[j].medicine_quantity %></td>
+			</tr>
+		<% } %>
+			</tbody>
+		</table>
+		<p>Prescription notes: <%= patientHistory[i].notes %></p>
+		<br>
+	<% } %>
+</body>
+</html>
